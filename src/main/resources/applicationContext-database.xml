@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    <property name="poolName"                  value="${hikaricp.poolName}" />
+    <property name="autoCommit"                value="${hikaricp.autoCommit}" />
+    <property name="connectionTestQuery"       value="${hikaricp.connectionTestQuery}" />
+    <property name="connectionTimeout" 	       value="${hikaricp.connectionTimeout}"/>
+    <property name="idleTimeout" 		       value="${hikaricp.idleTimeout}"/>
+    <property name="maxLifetime" 		       value="${hikaricp.maxLifetime}"/>
+    <property name="maximumPoolSize" 	       value="${hikaricp.maximumPoolSize}"/>
+    <property name="minimumIdle" 		       value="${hikaricp.minimumIdle}"/>
+    <property name="driverClassName" value="${hikaricp.dataSource.driverClassName}"/>
+    <property name="jdbcUrl" value="${hikaricp.dataSource.url}"/>
+    <property name="username" value="${hikaricp.dataSource.username}"/>
+    <property name="password" value="${hikaricp.dataSource.password}"/>
+    </bean>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+    <constructor-arg ref="hikariConfig" />
+    </bean>
+</beans>

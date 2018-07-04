@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd
+	                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.maxlong.study"/>
+    <context:property-placeholder location="classpath*:config.properties"/>
+
+    <bean class="com.maxlong.study.vo.User" name="user" scope="prototype">
+        <property name="age" value="12"/>
+        <property name="name" value="maxlong"/>
+    </bean>
+
+    <bean class="com.maxlong.study.service.UserService" name="userService"  scope="prototype">
+        <property name="user" ref="user"></property>
+    </bean>
+
+
+    <import resource="applicationContext-database.xml"/>
+    <!--<import resource="applicationContext-rabbitMq"></import>-->
+    <!--<import resource="applicationContext-zookeeper.xml"/>-->
+    <!--<import resource="applicationContext-quartz.xml"></import>-->
+    <!--<import resource="applicationContext-quartz-single.xml"/>-->
+    <!--<import resource="Spring-cache-anno.xml"/>-->
+    <!--<import resource="applicationContext-beans.xml"/>-->
+</beans>

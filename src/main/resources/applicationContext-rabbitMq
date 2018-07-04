@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!-- 连接服务配置  -->
+    <rabbit:connection-factory id="mqConnectionFactory" host="172.28.250.43" username="admin" password="admin" port="5672"  />
+
+    <rabbit:admin connection-factory="mqConnectionFactory"/>
+
+    <!-- queue 队列声明-->
+    <rabbit:queue id="queue_one" durable="true" auto-delete="false" exclusive="false" name="queue_one"/>
+
+    <!-- 配置线程池 -->
+    <bean id ="taskExecutor"  class ="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >
+        <!-- 线程池维护线程的最少数量 -->
+        <property name ="corePoolSize" value ="5" />
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name ="keepAliveSeconds" value ="30000" />
+        <!-- 线程池维护线程的最大数量 -->
+        <property name ="maxPoolSize" value ="1000" />
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name ="queueCapacity" value ="200" />
+    </bean>
+    <!-- exchange queue binging key 绑定 -->
+    <rabbit:direct-exchange name="abacus.notice.exchange.webgate.dev" durable="true" auto-delete="false" id="my-mq-exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="queue_one" key="abacus.notice.routekey.webgate.dev"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!-- 消息监听器 -->
+    <bean id="consumerMessageListener" class="com.maxlong.study.task.deviceCacheFlushTask"/>
+    <!-- 可以获取session的MessageListener -->
+    <!-- queue litener  观察 监听模式 当有消息到达时会通知监听在对应的队列上的监听对象-->
+    <rabbit:listener-container connection-factory="mqConnectionFactory" acknowledge="auto" task-executor="taskExecutor">
+        <rabbit:listener queues="queue_one" ref="consumerMessageListener"/>
+    </rabbit:listener-container>
+
+</beans>

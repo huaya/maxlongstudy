@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--zk配置-->
+    <bean id="zooKeeperFactory" class="com.maxlong.study.quartzZookeeper.ZookeeperFactory">
+        <property name="hosts" value="127.0.0.1:2181"/>
+        <property name="sessionTimeOut" value="15000"/>
+        <property name="nameSpace" value="zk-scheduling"/>
+    </bean>
+
+</beans>

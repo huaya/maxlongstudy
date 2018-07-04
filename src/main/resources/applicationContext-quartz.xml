@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task.xsd">
+
+
+
+    <bean id="job1" class="com.maxlong.study.quartz.TestJob"></bean>
+    <bean id="jobDetail1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.maxlong.study.quartz.TestJob"/>
+        <property name="durability" value="true" />
+        <property name="requestsRecovery" value="true" />
+        <property name="jobDataMap">
+            <props>
+                <prop key="zooKeeperFactory">zooKeeperFactory</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="trigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail1"></property>
+        <property name="cronExpression" value="30 * * * * ?"></property>
+    </bean>
+
+    <bean id="job2" class="com.maxlong.study.quartz.TestJob2"></bean>
+    <bean id="jobDetail2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.maxlong.study.quartz.TestJob2"/>
+        <property name="durability" value="true" />
+        <property name="requestsRecovery" value="true" />
+        <property name="jobDataMap">
+            <props>
+                <prop key="zooKeeperFactory">zooKeeperFactory</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="trigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail2"></property>
+        <property name="cronExpression" value="30 * * * * ?"></property>
+    </bean>
+
+
+    <bean id="job3" class="com.maxlong.study.quartz.TestJob3"></bean>
+    <bean id="jobDetail3" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.maxlong.study.quartz.TestJob3"/>
+        <property name="durability" value="true" />
+        <property name="requestsRecovery" value="true" />
+        <property name="jobDataMap">
+            <props>
+                <prop key="zooKeeperFactory">zooKeeperFactory</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="trigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail3"></property>
+        <property name="cronExpression" value="30 * * * * ?"></property>
+    </bean>
+
+    <bean id="job4" class="com.maxlong.study.quartz.TestJob4"></bean>
+    <bean id="jobDetail4" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.maxlong.study.quartz.TestJob4"/>
+        <property name="durability" value="true" />
+        <property name="requestsRecovery" value="true" />
+        <property name="jobDataMap">
+            <props>
+                <prop key="zooKeeperFactory">zooKeeperFactory</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="trigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobDetail4"></property>
+        <property name="cronExpression" value="30 * * * * ?"></property>
+    </bean>
+
+    <bean id="quartzScheduler1" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <property name="configLocation" value="classpath:quartz-cluster.properties" />
+
+        <property name="schedulerName" value="CRMscheduler1" />
+        <!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
+        <property name="startupDelay" value="30" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
+        <property name="overwriteExistingJobs" value="true" />
+        <!-- 设置自动启动 -->
+        <property name="autoStartup" value="true" />
+        <!-- 注册触发器 -->
+        <property name="triggers">
+            <list>
+                <ref bean="trigger3"/>
+                <ref bean="trigger4"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="quartzScheduler2" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <property name="configLocation" value="classpath:quartz-cluster.properties" />
+        <property name="schedulerName" value="CRMscheduler2" />
+        <!--必须的，QuartzScheduler 延时启动，应用启动完后 QuartzScheduler 再启动 -->
+        <property name="startupDelay" value="30" />
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <!--可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了 -->
+        <property name="overwriteExistingJobs" value="true" />
+        <!-- 设置自动启动 -->
+        <property name="autoStartup" value="true" />
+        <!-- 注册触发器 -->
+        <property name="triggers">
+            <list>
+                <ref bean="trigger1"/>
+                <ref bean="trigger2"/>
+            </list>
+        </property>
+
+    </bean>
+
+
+</beans>
