@@ -21,11 +21,11 @@ public class Consumer1 {
         String pid = name.split("@")[0];
         // 创建连接和channel
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("172.28.250.91");
+        factory.setHost("127.0.0.1");
         factory.setPort(5672);
         factory.setVirtualHost("/");
-        factory.setUsername("guest");
-        factory.setPassword("guest");
+        factory.setUsername("root");
+        factory.setPassword("root");
         Connection conn = factory.newConnection();
         Channel channel = conn.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME,"direct",false);

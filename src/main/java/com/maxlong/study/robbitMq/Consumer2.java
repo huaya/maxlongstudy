@@ -22,17 +22,17 @@ public class Consumer2 {
         String pid = name.split("@")[0];
         // 创建连接和channel
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("172.28.250.43");
+        factory.setHost("127.0.0.1");
         factory.setPort(5672);
-        factory.setUsername("admin");
-        factory.setPassword("admin");
+        factory.setUsername("root");
+        factory.setPassword("root");
         Connection conn = factory.newConnection();
         Channel channel = conn.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME, "direct",true);
         // 由RabbitMQ自行创建的临时队列,唯一且随消费者的中止而自动删除的队列
         String queueName = channel.queueDeclare().getQueue();
         // binding
-        channel.queueBind("", EXCHANGE_NAME, "abacus.notice.routekey.webgate.dev.mxl");
+        channel.queueBind(queueName, EXCHANGE_NAME, "abacus.notice.routekey.webgate.dev.mxl");
 
         System.out.println(pid + "已经创建,正在等待消息...");
 
